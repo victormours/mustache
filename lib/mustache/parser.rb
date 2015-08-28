@@ -84,6 +84,8 @@ EOF
     # the rest only allow ALLOWED_CONTENT.
     ANY_CONTENT = [ '!', '=' ].map(&:freeze)
 
+    EQUALITY_MATCHER = '=='.freeze
+
     attr_writer :otag, :ctag
 
     # Accepts an options hash which does nothing but may be used in
@@ -182,12 +184,21 @@ EOF
       # We found {{ but we can't figure out what's going on inside.
       error "Illegal content in tag" if content.empty?
 
-      # TODO scan here for `== value` to add equality matcher
+      equality_matcher = @scanner.scan(regex(EQUALITY_MATCHER))
+      if equality_matcher
 
-      fetch = [:mustache, :fetch, content.split('.')]
-      prev = @result
+        # TODO scan for equality value
+        match = [:mustache, :fetch, content.split('.')]
 
-      dispatch_based_on_type(type, content, fetch, padding, pre_match_position)
+        dispatch_based_on_type(type, content, match, padding, pre_match_position)
+      else
+        # TODO set the proper token
+        fetch = [:mustache, :fetch, content.split('.')]
+        prev = @result
+
+        dispatch_based_on_type(type, content, fetch, padding, pre_match_position)
+      end
+
 
       # The closing } in unescaped tags is just a hack for
       # aesthetics.
