@@ -182,6 +182,8 @@ EOF
       # We found {{ but we can't figure out what's going on inside.
       error "Illegal content in tag" if content.empty?
 
+      # TODO scan here for `== value` to add equality matcher
+
       fetch = [:mustache, :fetch, content.split('.')]
       prev = @result
 
