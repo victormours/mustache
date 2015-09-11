@@ -82,10 +82,10 @@ end_complex
 
   def test_if_section
     instance = Mustache.new
-    instance.template = "{{# account.status.\"trial over\" }}Please subscribe!{{/ account.status.\"trial over\"}}"
+    instance.template = '{{# status."trial over" }}Please subscribe!{{/ status."trial over"}}'
 
-    assert_equal "Please subscribe!", instance.render(account: {status: "trial over"})
-    assert_equal "", instance.render(account: {status: "live"})
+    assert_equal "Please subscribe!", instance.render({status: "trial over"})
+    assert_equal "", instance.render({status: "live"})
   end
 
   def test_padding_before_section
