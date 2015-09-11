@@ -80,6 +80,14 @@ end_complex
     assert_equal "", instance.render
   end
 
+  def test_if_section
+    instance = Mustache.new
+    instance.template = "{{# account.status.\"trial over\" }}Please subscribe!{{/ account.status.\"trial over\"}}"
+
+    assert_equal "Please subscribe!", instance.render(account: {status: "trial over"})
+    assert_equal "", instance.render(account: {status: "live"})
+  end
+
   def test_padding_before_section
     instance = Mustache.new
     instance.template = "\t{{#list}}a{{/list}}"

@@ -94,4 +94,13 @@ EOF
 
     assert_equal expected, tokens
   end
+
+  def test_if_section
+    lexer = Mustache::Parser.new
+    tokens = lexer.compile('{{# account.status."trial over" }}Please subscribe!{{/ account.status."trial over"}}')
+
+    expected = [:multi, [:mustache, :section, [:mustache, :fetch, ["account", "status", "\"trial over\""]], [1, 30], [:multi, [:static, "Please subscribe!"]], "Please subscribe!", ["{{", "}}"]]]
+    assert_equal expected, tokens
+
+  end
 end
