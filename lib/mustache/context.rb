@@ -136,6 +136,9 @@ class Mustache
     # @return [Object] The value of key in object if it is found, and default otherwise.
     #
     def find(obj, key, default = nil)
+      if key.to_s.start_with?('"')
+        return key.to_s[1..-2] == obj.to_s
+      end
       return find_in_hash(obj.to_hash, key, default) if obj.respond_to?(:to_hash)
 
       key = to_tag(key)
